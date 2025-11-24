@@ -2,10 +2,10 @@ var canvas;
 var gl;
 var program;
 
-var vBuffer, cBuffer;//顶点属性数组
+var vBuffer, cBuffer;//顶点属性数�?
 
-// 交互可调参数及根据参数生成的三个变换：M,V,P（全局变量）
-var modelScale; //物体整体缩放的因子
+// 交互可调参数及根据参数生成的三个变换：M,V,P（全局变量�?
+var modelScale; //物体整体缩放的因�?
 var theta; // 视点（眼睛）绕Y轴旋转角度，参极坐标θ值，
 var phi; // 视点（眼睛）绕X轴旋转角度，参极坐标φ值，
 var isOrth; // 投影方式设置参数
@@ -24,27 +24,27 @@ var lastMouseX, lastMouseY;
 var u_ModelMatrix, u_ViewMatrix, u_ProjectionMatrix;
 var u_Flag;//用来区分绘制坐标还是物体，坐标轴不需要进行M变换
 
-/* ***********窗口加载时调用:程序环境初始化程序****************** */
+/* ***********窗口加载时调�?:程序环境初始化程�?****************** */
 window.onload = function() {
     canvas = document.getElementById("canvas");
     gl = canvas.getContext('webgl2');
     if ( !gl ) { alert( "WebGL isn't available" ); }
     
-    program = initShaders( gl, "shaders/3d-wandering.vert", "shaders/3d-wandering.frag" );
+    program = initShaders( gl, "shaders2/3d-wandering.vert", "shaders2/3d-wandering.frag" );
     gl.useProgram( program );
     
-	//调整画布大小为正方形以保证图形长宽比例正确,设置视口viewport大小与画布一致
+	//调整画布大小为正方形以保证图形长宽比例正�?,设置视口viewport大小与画布一�?
     resize();
 	
-	// 开启深度缓存，以正确渲染物体被遮挡部分，3D显示必备
+	// 开启深度缓存，以正确渲染物体被遮挡部分�?3D显示必备
     gl.enable(gl.DEPTH_TEST); 
-	// 设置canvas画布背景色 -白色-
+	// 设置canvas画布背景�? -白色-
     gl.clearColor(1.0, 1.0, 1.0, 1.0); 
 	
 	
     // 初始化数据缓冲区，并关联attribute 着色器变量
-    vBuffer = gl.createBuffer();//为points存储的缓存
-    cBuffer = gl.createBuffer();//为colors存储的缓存
+    vBuffer = gl.createBuffer();//为points存储的缓�?
+    cBuffer = gl.createBuffer();//为colors存储的缓�?
 		
 	// 关联uniform着色器变量
     u_ModelMatrix = gl.getUniformLocation(program,"u_ModelMatrix");
@@ -52,12 +52,12 @@ window.onload = function() {
     u_ProjectionMatrix = gl.getUniformLocation( program, "u_ProjectionMatrix" );
     u_Flag = gl.getUniformLocation(program, "u_Flag");
 
-	//初始化交互界面上的相关参数
+	//初始化交互界面上的相关参�?
 	initViewingParameters();
 	
-    // 生成XYZ坐标轴，调用models-data.js中函数//返回points和colors数组 
+    // 生成XYZ坐标轴，调用models-data.js中函�?//返回points和colors数组 
     vertextsXYZ(); 	
-	// 生成立方体模型数据，调用models-data.js中函数//返回points和colors数组 
+	// 生成立方体模型数据，调用models-data.js中函�?//返回points和colors数组 
     generateCube(); 
 	
     // 发送顶点属性数据points和colors给GPU
@@ -91,7 +91,7 @@ function setupMouseEvents() {
         theta += deltaX * 0.5;
         phi += deltaY * 0.5;
         
-        // 限制phi角度范围，避免万向节锁
+        // 限制phi角度范围，避免万向节�?
         phi = Math.max(1, Math.min(179, phi));
         
         lastMouseX = e.clientX;
@@ -113,30 +113,30 @@ window.onkeydown = function(e){
             modelScale *= 0.9;
             break;
 
-        case 87:    // W-物体向前移动或相机绕X轴旋转
+        case 87:    // W-物体向前移动或相机绕X轴旋�?
             if (e.shiftKey) {
                 // WASD控制物体运动
                 objectPosition[2] -= moveSpeed;
             } else {
-                // 相机绕X轴旋转
+                // 相机绕X轴旋�?
                 phi -= 5;
             }
             break;
-        case 83:    // S-物体向后移动或相机绕X轴旋转
+        case 83:    // S-物体向后移动或相机绕X轴旋�?
             if (e.shiftKey) {
                 objectPosition[2] += moveSpeed;
             } else {
                 phi += 5;
             }
             break;
-        case 65:    // A-物体向左移动或相机绕Y轴旋转
+        case 65:    // A-物体向左移动或相机绕Y轴旋�?
             if (e.shiftKey) {
                 objectPosition[0] -= moveSpeed;
             } else {
                 theta -= 5;
             }
             break;
-        case 68:    // D-物体向右移动或相机绕Y轴旋转
+        case 68:    // D-物体向右移动或相机绕Y轴旋�?
             if (e.shiftKey) {
                 objectPosition[0] += moveSpeed;
             } else {
@@ -158,10 +158,10 @@ window.onkeydown = function(e){
         case 80:    // P-切换投影方式
             isOrth = !isOrth;
             break;
-        case 77:    // M-放大俯仰角，给了一个限制范围
+        case 77:    // M-放大俯仰角，给了一个限制范�?
             fov = Math.min(fov + 5, 170);
             break;
-        case 78:    // N-较小俯仰角
+        case 78:    // N-较小俯仰�?
             fov = Math.max(fov - 5, 5);
             break; 			
 			
@@ -171,23 +171,23 @@ window.onkeydown = function(e){
             objectRotation = vec3(0.0, 0.0, 0.0);
             break;
     
-        //===================TODO3：消隐设置=======================
+        //===================TODO3：消隐设�?=======================
         case 82: // R -开启后向面剔除
             gl.enable(gl.CULL_FACE);
             gl.cullFace(gl.BACK);
             break;
-        case 84: // T- 关闭后向面剔除
+        case 84: // T- 关闭后向面剔�?
             gl.disable(gl.CULL_FACE);
             break;
 
         case 66: // B-开启深度缓存，使用消隐算法
             gl.enable(gl.DEPTH_TEST);
             break;
-        case 86: // V-关闭深度缓存，不用消隐
+        case 86: // V-关闭深度缓存，不用消�?
             gl.disable(gl.DEPTH_TEST);
             break;
     }        
-    render();//参数变化后需要重新绘制画面
+    render();//参数变化后需要重新绘制画�?
 }
 
 /* 绘图界面随窗口交互缩放而相应变化，保持1:1防止图形变形 */
@@ -213,25 +213,25 @@ function render(){
     ViewMatrix=formViewMatrix(); //V:视点变换矩阵
     ProjectionMatrix=formProjectMatrix(); //投影变换矩阵
     
-    // 传递变换矩阵    
+    // 传递变换矩�?    
     gl.uniformMatrix4fv( u_ModelMatrix, false, flatten(ModelMatrix) );     
     gl.uniformMatrix4fv( u_ViewMatrix, false, flatten(ViewMatrix) ); 
     gl.uniformMatrix4fv( u_ProjectionMatrix, false, flatten(ProjectionMatrix) ); 
 	
-    // 标志位设为0，用顶点数据绘制坐标系
+    // 标志位设�?0，用顶点数据绘制坐标�?
     gl.uniform1i( u_Flag, 0 );
-    gl.drawArrays( gl.LINES, 0, 6 ); // 绘制X轴，从0开始，读6个点
-    gl.drawArrays( gl.LINES, 6, 6 ); // 绘制y轴，从6开始，读6个点
-    gl.drawArrays( gl.LINES, 12, 6 ); // 绘制z轴，从12开始，读6个点        
+    gl.drawArrays( gl.LINES, 0, 6 ); // 绘制X轴，�?0开始，�?6个点
+    gl.drawArrays( gl.LINES, 6, 6 ); // 绘制y轴，�?6开始，�?6个点
+    gl.drawArrays( gl.LINES, 12, 6 ); // 绘制z轴，�?12开始，�?6个点        
 
-    // 标志位设为1，用顶点数据绘制 面单色立方体
+    // 标志位设�?1，用顶点数据绘制 面单色立方体
     gl.uniform1i( u_Flag, 1 );
-    gl.drawArrays( gl.TRIANGLES, 18, points.length - 18 ); // 绘制物体,都是三角形网格表面
+    gl.drawArrays( gl.TRIANGLES, 18, points.length - 18 ); // 绘制物体,都是三角形网格表�?
 }
 
 
 /* ****************************************************
-* 初始化或复位：需要将交互参数及变换矩阵设置为初始值
+* 初始化或复位：需要将交互参数及变换矩阵设置为初始�?
 ********************************************************/
 function initViewingParameters(){
 	modelScale=1.0;		
@@ -292,7 +292,7 @@ function modelChange(model){
             break;
         }
     }
-    SendData();//重新发送数据
+    SendData();//重新发送数�?
 	render();//重新渲染
 }
 
@@ -301,7 +301,7 @@ function modelChange(model){
  * 生成观察流水管线中的 M,V,P矩阵  
 ********************************************************/
 function formModelMatrix(){
-    // 物体缩放矩阵 - 使用 scale 而不是 scalem
+    // 物体缩放矩阵 - 使用 scale 而不�? scalem
     var scaleMatrix = scale(modelScale, modelScale, modelScale);
     
     // 物体平移矩阵
@@ -321,7 +321,7 @@ function formViewMatrix(){
     var thetaRad = radians(theta);
     var phiRad = radians(phi);
     
-    // 计算观察者位置（球坐标转直角坐标）
+    // 计算观察者位置（球坐标转直角坐标�?
     var eye = vec3(
         radius * Math.sin(phiRad) * Math.sin(thetaRad),
         radius * Math.cos(phiRad),

@@ -1,4 +1,4 @@
-// 顶点数与FPS显示功能集成版
+// 顶点数与FPS显示功能集成�?
 "use strict";
 
 var canvas;
@@ -47,7 +47,7 @@ function init() {
     divideTriangle(vertices[0], vertices[1], vertices[2], numTimesToSubdivide);
     updateVertexCount();
 
-    var program = initShaders(gl, "shaders/gasket2D.vert", "shaders/gasket2D.frag");
+    var program = initShaders(gl, "shaders1/gasket2D.vert", "shaders1/gasket2D.frag");
     gl.useProgram(program);
 
     bufferId = gl.createBuffer();
@@ -151,7 +151,7 @@ function render() {
 }
 
 function updateVertexCount() {
-    document.getElementById("vertexCount").innerHTML = `顶点数: ${points.length}`;
+    document.getElementById("vertexCount").innerHTML = `顶点�?: ${points.length}`;
 }
 
 function countFPS() {
@@ -165,7 +165,7 @@ function countFPS() {
     }
 }
 
-// 初始化执行
+// 初始化执�?
 window.onload = init;
 window.onresize = function() {
     canvas.width = document.body.clientWidth;
